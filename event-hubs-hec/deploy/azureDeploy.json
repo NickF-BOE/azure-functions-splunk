@@ -259,7 +259,7 @@
         {
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2019-08-01",
-            "name": "[variables('appServicePlanName')]",
+            "name": "UKSOUTHPLAN",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "P0v3",
@@ -269,7 +269,7 @@
                 "capacity": 3
             },
             "properties": {
-                "name": "[variables('appServicePlanName')]"
+                "name": "UKSOUTHPLAN"
             }
         },
         {
@@ -281,10 +281,10 @@
             "kind": "functionapp",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
+                "[resourceId('Microsoft.Web/serverfarms', 'UKSOUTHPLAN')]"
             ],
             "properties": {
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'UKSOUTHPLAN')]",
                 "siteConfig": {
                     "appSettings": [
                         {
