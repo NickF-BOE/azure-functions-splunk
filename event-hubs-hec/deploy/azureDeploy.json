@@ -8,6 +8,12 @@
                 "description": "The name of the function app that you wish to create."
             }
         },
+        "aspName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the App Service Plan that you wish to create."
+            }
+        },
         "storageAccountType": {
             "type": "string",
             "defaultValue": "Standard_LRS",
@@ -227,6 +233,7 @@
         }
     },
     "variables": {
+        "appServicePlanName": "[parameters('aspName')]",
         "functionAppName": "[parameters('appName')]",
         "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'functions')]"
     },
@@ -259,7 +266,7 @@
         {
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2019-08-01",
-            "name": "asp-UKSOUTHPLAN",
+            "name": "[variables('appServicePlanName')]",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "P0v3",
@@ -269,7 +276,7 @@
                 "capacity": 3
             },
             "properties": {
-                "name": "asp-UKSOUTHPLAN"
+                "name": "[variables('appServicePlanName')]"
             }
         },
         {
@@ -281,10 +288,10 @@
             "kind": "functionapp",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
-                "[resourceId('Microsoft.Web/serverfarms', 'asp-UKSOUTHPLAN')]"
+                "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]"
             ],
             "properties": {
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'asp-UKSOUTHPLAN')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('appServicePlanName'))]",
                 "siteConfig": {
                     "appSettings": [
                         {
