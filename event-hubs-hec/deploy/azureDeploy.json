@@ -257,12 +257,10 @@
             }
         },
         {
+            "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2019-08-01",
-            "type": "Microsoft.Web/sites",
-            "name": "[variables('functionAppName')]",
+            "name": "UKSOUTHPLAN",
             "location": "[resourceGroup().location]",
-            "tags": "[if(contains(parameters('tagsByResource'), 'Microsoft.Web/sites'), parameters('tagsByResource')['Microsoft.Web/sites'], json('{}'))]",
-            "kind": "functionapp",
             "sku": {
                 "name": "P0v3",
                 "tier": "Premium0V3",
@@ -270,10 +268,23 @@
                 "family": "Pv3",
                 "capacity": 3
             },
+            "properties": {
+                "name": "UKSOUTHPLAN"
+            }
+        },
+        {
+            "apiVersion": "2019-08-01",
+            "type": "Microsoft.Web/sites",
+            "name": "[variables('functionAppName')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[if(contains(parameters('tagsByResource'), 'Microsoft.Web/sites'), parameters('tagsByResource')['Microsoft.Web/sites'], json('{}'))]",
+            "kind": "functionapp",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+                "[resourceId('Microsoft.Web/serverfarms', 'UKSOUTHPLAN')]"
             ],
             "properties": {
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', 'UKSOUTHPLAN')]",
                 "siteConfig": {
                     "appSettings": [
                         {
