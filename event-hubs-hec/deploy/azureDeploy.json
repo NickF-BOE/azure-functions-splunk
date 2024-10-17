@@ -233,6 +233,7 @@
         }
     },
     "variables": {
+        "appServicePlanName": "[parameters('appServicePlanName]",
         "functionAppName": "[parameters('appName')]",
         "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'functions')]"
     },
